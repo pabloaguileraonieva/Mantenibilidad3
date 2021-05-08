@@ -141,93 +141,96 @@ public class LineaHorizonte {
     	historialAlturas histAlt=new historialAlturas();
         LineaHorizonte salida = new LineaHorizonte(); // LineaHorizonte de salida
         
-        conjuntoPuntos conjPunt=new conjuntoPuntos();
+        Punto p1 = new Punto();         // punto donde guardaremos el primer punto del LineaHorizonte s1
+        Punto p2 = new Punto();         // punto donde guardaremos el primer punto del LineaHorizonte s2
+        Punto paux = new Punto();
         
         imprimirInfoLineas(s1,s2);
         //Mientras tengamos elementos en s1 y en s2
         while ((!s1.isEmpty()) && (!s2.isEmpty())) 
         {
-            conjPunt.setPaux(new Punto());  // Inicializamos la variable paux
-            conjPunt.setP1(s1.getPunto(0)); // guardamos el primer elemento de s1
-            conjPunt.setP2(s2.getPunto(0)); // guardamos el primer elemento de s2
+            paux = new Punto();  // Inicializamos la variable paux
+            p1 = s1.getPunto(0); // guardamos el primer elemento de s1
+            p2 = s2.getPunto(0); // guardamos el primer elemento de s2
 
-            if (conjPunt.getP1().getX() < conjPunt.getP2().getX()) // si X del s1 es menor que la X del s2
+            if (p1.getX() < p2.getX()) // si X del s1 es menor que la X del s2
             {
-            	LineaHorizonteFussionCaso1(s1,conjPunt,histAlt,salida);
+            	LineaHorizonteFussionCaso1(s1,p1,paux,histAlt,salida);
             }
-            else if (conjPunt.getP1().getX() > conjPunt.getP2().getX()) // si X del s1 es mayor que la X del s2
+            else if (p1.getX() > p2.getX()) // si X del s1 es mayor que la X del s2
             {
-            	LineaHorizonteFussionCaso2(s2,conjPunt,histAlt,salida);
+            	LineaHorizonteFussionCaso2(s2,p2,paux,histAlt,salida);
             }
             else // si la X del s1 es igual a la X del s2
             {
-            	if ((conjPunt.getP1().getY() > conjPunt.getP2().getY()) && (conjPunt.getP1().getY()!=histAlt.getPrev())) // guardaremos aquel punto que tenga la altura mas alta
+            	if ((p1.getY() > p2.getY()) && (p1.getY()!=histAlt.getPrev())) // guardaremos aquel punto que tenga la altura mas alta
                 {
-                    salida.addPunto(conjPunt.getP1());
-                    histAlt.setPrev(conjPunt.getP1().getY());
+                    salida.addPunto(p1);
+                    histAlt.setPrev(p1.getY());
                 }
-                if ((conjPunt.getP1().getY() <= conjPunt.getP2().getY()) && (conjPunt.getP2().getY()!=histAlt.getPrev()))
+                if ((p1.getY() <= p2.getY()) && (p2.getY()!=histAlt.getPrev()))
                 {
-                    salida.addPunto(conjPunt.getP2());
-                    histAlt.setPrev(conjPunt.getP1().getY());
+                    salida.addPunto(p2);
+                    histAlt.setPrev(p1.getY());
                 }
-                histAlt.setS1y(conjPunt.getP1().getY());   // actualizamos la s1y e s2y
-                histAlt.setS2y(conjPunt.getP2().getY());
+                histAlt.setS1y(p1.getY());   // actualizamos la s1y e s2y
+                histAlt.setS2y(p2.getY());
                 s1.borrarPunto(0); // eliminamos el punto del s1 y del s2
                 s2.borrarPunto(0);
             }
         }
         while ((!s1.isEmpty())) //si aun nos quedan elementos en el s1
         {
-        	conjPunt.setPaux(s1.getPunto(0)); // guardamos en paux el primer punto
+            paux=s1.getPunto(0); // guardamos en paux el primer punto
             
-            if (conjPunt.getPaux().getY()!=histAlt.getPrev()) // si paux no tiene la misma altura del segmento previo
+            if (paux.getY()!=histAlt.getPrev()) // si paux no tiene la misma altura del segmento previo
             {
-                salida.addPunto(conjPunt.getPaux()); // lo añadimos al LineaHorizonte de salida
-                histAlt.setPrev(conjPunt.getPaux().getY());    // y actualizamos prev
+                salida.addPunto(paux); // lo añadimos al LineaHorizonte de salida
+                histAlt.setPrev(paux.getY());    // y actualizamos prev
             }
             s1.borrarPunto(0); // en cualquier caso eliminamos el punto de s1 (tanto si se añade como si no es valido)
         }
         while((!s2.isEmpty())) //si aun nos quedan elementos en el s2
         {
-        	conjPunt.setPaux(s2.getPunto(0)); // guardamos en paux el primer punto
+            paux=s2.getPunto(0); // guardamos en paux el primer punto
            
-            if (conjPunt.getPaux().getY()!=histAlt.getPrev()) // si paux no tiene la misma altura del segmento previo
+            if (paux.getY()!=histAlt.getPrev()) // si paux no tiene la misma altura del segmento previo
             {
-                salida.addPunto(conjPunt.getPaux()); // lo añadimos al LineaHorizonte de salida
-                histAlt.setPrev(conjPunt.getPaux().getY());    // y actualizamos prev
+                salida.addPunto(paux); // lo añadimos al LineaHorizonte de salida
+                histAlt.setPrev(paux.getY());    // y actualizamos prev
             }
             s2.borrarPunto(0); // en cualquier caso eliminamos el punto de s2 (tanto si se añade como si no es valido)
         }
         return salida;
     }
-        public void LineaHorizonteFussionCaso1(LineaHorizonte s, conjuntoPuntos conjPunt, historialAlturas histAlt, LineaHorizonte salida)
+        public void LineaHorizonteFussionCaso1(LineaHorizonte s, Punto p, Punto paux, historialAlturas histAlt, LineaHorizonte salida)
         {
-        	conjPunt.getPaux().setX(conjPunt.getP1().getX());                // guardamos en paux esa X
-        	conjPunt.getPaux().setY(Math.max(conjPunt.getP1().getY(), histAlt.getS2y())); // y hacemos que el maximo entre la Y del s1 y la altura previa del s2 sea la altura Y de paux
+            paux.setX(p.getX());                // guardamos en paux esa X
+            paux.setY(Math.max(p.getY(), histAlt.getS2y())); // y hacemos que el maximo entre la Y del s1 y la altura previa del s2 sea la altura Y de paux
 
-            if (conjPunt.getPaux().getY()!=histAlt.getPrev()) // si este maximo no es igual al del segmento anterior
+            if (paux.getY()!=histAlt.getPrev()) // si este maximo no es igual al del segmento anterior
             {
-                salida.addPunto(conjPunt.getPaux()); // añadimos el punto al LineaHorizonte de salida
-                histAlt.setPrev(conjPunt.getPaux().getY());     // actualizamos prev
+                salida.addPunto(paux); // añadimos el punto al LineaHorizonte de salida
+                histAlt.setPrev(paux.getY());     // actualizamos prev
             }
-            histAlt.setS1y(conjPunt.getP1().getY());   // actualizamos la altura s1y
+            histAlt.setS1y(p.getY());   // actualizamos la altura s1y
             s.borrarPunto(0); // en cualquier caso eliminamos el punto de s1 (tanto si se añade como si no es valido)
         }
 
-        public void LineaHorizonteFussionCaso2(LineaHorizonte s, conjuntoPuntos conjPunt, historialAlturas histAlt, LineaHorizonte salida)
+        public void LineaHorizonteFussionCaso2(LineaHorizonte s, Punto p, Punto paux, historialAlturas histAlt, LineaHorizonte salida)
         {
-        	conjPunt.getPaux().setX(conjPunt.getP2().getX());                // guardamos en paux esa X
-        	conjPunt.getPaux().setY(Math.max(conjPunt.getP2().getY(), histAlt.getS1y())); // y hacemos que el maximo entre la Y del s1 y la altura previa del s2 sea la altura Y de paux
+            paux.setX(p.getX());                // guardamos en paux esa X
+            paux.setY(Math.max(p.getY(), histAlt.getS1y())); // y hacemos que el maximo entre la Y del s1 y la altura previa del s2 sea la altura Y de paux
 
-            if (conjPunt.getPaux().getY()!=histAlt.getPrev()) // si este maximo no es igual al del segmento anterior
+            if (paux.getY()!=histAlt.getPrev()) // si este maximo no es igual al del segmento anterior
             {
-                salida.addPunto(conjPunt.getPaux()); // añadimos el punto al LineaHorizonte de salida
-                histAlt.setPrev(conjPunt.getPaux().getY());     // actualizamos prev
+                salida.addPunto(paux); // añadimos el punto al LineaHorizonte de salida
+                histAlt.setPrev(paux.getY());     // actualizamos prev
             }
-            histAlt.setS2y(conjPunt.getP2().getY());   // actualizamos la altura s1y
+            histAlt.setS2y(p.getY());   // actualizamos la altura s1y
             s.borrarPunto(0); // en cualquier caso eliminamos el punto de s1 (tanto si se añade como si no es valido)
         }
+
 
         
         public void imprimirInfoLineas(LineaHorizonte s1, LineaHorizonte s2)
