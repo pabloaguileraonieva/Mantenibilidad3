@@ -7,9 +7,9 @@ public class conjuntoPuntos {
 	
 	public conjuntoPuntos()
 	{
-		p1=new Punto();
-		p2=new Punto();
-		paux=new Punto();
+		p1=null;
+		p2=null;
+		paux=null;
 	}
 
 	public Punto getP1() {
