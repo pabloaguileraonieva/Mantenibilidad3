@@ -149,36 +149,9 @@ public class LineaHorizonte {
         //Mientras tengamos elementos en s1 y en s2
         while ((!s1.isEmpty()) && (!s2.isEmpty())) 
         {
-            paux = new Punto();  // Inicializamos la variable paux
-            p1 = s1.getPunto(0); // guardamos el primer elemento de s1
-            p2 = s2.getPunto(0); // guardamos el primer elemento de s2
-
-            if (p1.getX() < p2.getX()) // si X del s1 es menor que la X del s2
-            {
-            	LineaHorizonteFussionCaso1(s1,p1,paux,histAlt,salida);
-            }
-            else if (p1.getX() > p2.getX()) // si X del s1 es mayor que la X del s2
-            {
-            	LineaHorizonteFussionCaso2(s2,p2,paux,histAlt,salida);
-            }
-            else // si la X del s1 es igual a la X del s2
-            {
-            	if ((p1.getY() > p2.getY()) && (p1.getY()!=histAlt.getPrev())) // guardaremos aquel punto que tenga la altura mas alta
-                {
-                    salida.addPunto(p1);
-                    histAlt.setPrev(p1.getY());
-                }
-                if ((p1.getY() <= p2.getY()) && (p2.getY()!=histAlt.getPrev()))
-                {
-                    salida.addPunto(p2);
-                    histAlt.setPrev(p1.getY());
-                }
-                histAlt.setS1y(p1.getY());   // actualizamos la s1y e s2y
-                histAlt.setS2y(p2.getY());
-                s1.borrarPunto(0); // eliminamos el punto del s1 y del s2
-                s2.borrarPunto(0);
-            }
+            LineaHorizonteFussionExtra(s1,s2,p1,p2,paux,histAlt,salida);
         }
+           
         while ((!s1.isEmpty())) //si aun nos quedan elementos en el s1
         {
             paux=s1.getPunto(0); // guardamos en paux el primer punto
@@ -203,6 +176,37 @@ public class LineaHorizonte {
         }
         return salida;
     }
+    	public void LineaHorizonteFussionExtra(LineaHorizonte s1,LineaHorizonte s2, Punto p1, Punto p2, Punto paux, historialAlturas histAlt, LineaHorizonte salida)
+    	{
+            paux = new Punto();  // Inicializamos la variable paux
+            p1 = s1.getPunto(0); // guardamos el primer elemento de s1
+            p2 = s2.getPunto(0); // guardamos el primer elemento de s2
+    		 if (p1.getX() < p2.getX()) // si X del s1 es menor que la X del s2
+             {
+             	LineaHorizonteFussionCaso1(s1,p1,paux,histAlt,salida);
+             }
+             else if (p1.getX() > p2.getX()) // si X del s1 es mayor que la X del s2
+             {
+             	LineaHorizonteFussionCaso2(s2,p2,paux,histAlt,salida);
+             }
+             else // si la X del s1 es igual a la X del s2
+             {
+             	if ((p1.getY() > p2.getY()) && (p1.getY()!=histAlt.getPrev())) // guardaremos aquel punto que tenga la altura mas alta
+                 {
+                     salida.addPunto(p1);
+                     histAlt.setPrev(p1.getY());
+                 }
+                 if ((p1.getY() <= p2.getY()) && (p2.getY()!=histAlt.getPrev()))
+                 {
+                     salida.addPunto(p2);
+                     histAlt.setPrev(p1.getY());
+                 }
+                 histAlt.setS1y(p1.getY());   // actualizamos la s1y e s2y
+                 histAlt.setS2y(p2.getY());
+                 s1.borrarPunto(0); // eliminamos el punto del s1 y del s2
+                 s2.borrarPunto(0);
+             }
+         }
         public void LineaHorizonteFussionCaso1(LineaHorizonte s, Punto p, Punto paux, historialAlturas histAlt, LineaHorizonte salida)
         {
             paux.setX(p.getX());                // guardamos en paux esa X
